@@ -1,0 +1,10 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "dependencies": {
+        "meteo": "../node-red-contrib/meteo",
+        "node-red-contrib-mongodb": "~0.3.4",
+        "node-red-node-openweathermap": "~0.2.1"
+    }
+}

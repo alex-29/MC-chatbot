@@ -1,0 +1,556 @@
+[
+    {
+        "id": "718459f3.4a42d8",
+        "type": "tab",
+        "label": "First_Flow",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "bf01498e.e4c518",
+        "type": "subflow",
+        "name": "set user",
+        "info": "",
+        "category": "",
+        "in": [],
+        "out": []
+    },
+    {
+        "id": "73fb07f4.a52948",
+        "type": "credentials-config",
+        "z": "718459f3.4a42d8",
+        "name": "webchat",
+        "rules": [
+            {
+                "p": "secret",
+                "tot": "str"
+            }
+        ]
+    },
+    {
+        "id": "b17e0003.442d7",
+        "type": "mongodb",
+        "z": "",
+        "name": "chatbot_db"
+    },
+    {
+        "id": "2f0244e1.25d9cc",
+        "type": "mongodb-config",
+        "z": "",
+        "hostname": "40.89.173.111",
+        "port": "27017",
+        "db": "chatbot",
+        "name": "chatbotdb"
+    },
+    {
+        "id": "db853bd.d7886c8",
+        "type": "bot",
+        "z": "718459f3.4a42d8",
+        "name": "bot",
+        "project": "",
+        "port": "",
+        "x": 50,
+        "y": 300,
+        "wires": [
+            [
+                "89c46a99.f8aa68"
+            ]
+        ]
+    },
+    {
+        "id": "22586edf.7e5f82",
+        "type": "http in",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "url": "/webchat",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 60,
+        "wires": [
+            [
+                "402738d9.4b33e8"
+            ]
+        ]
+    },
+    {
+        "id": "965c2dac.d234a",
+        "type": "template",
+        "z": "718459f3.4a42d8",
+        "name": "chat",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n  <head>\n    <title>Webchat</title>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.botframework.com/botframework-webchat/latest/botchat.css\">\n  </head>\n\n<body id=\"bg\">\n    <div id=\"bot\"></div>\n    \n    <script src=\"https://code.jquery.com/jquery-3.1.1.slim.min.js\" integrity=\"sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://cdn.botframework.com/botframework-webchat/latest/botchat.js\" width=\"400\"></script>\n    <script>\n        var name = \"Alex\";\n        var userid = Math.floor(Math.random() * 10) + \"\" + Date.now()+ \"\" +Math.floor(Math.random() * 10);\n        var connector = new BotChat.DirectLine ({ secret: \"{{parameters.secret}}\" });\n        \n          BotChat.App({\n            botConnection: connector,\n            user: { \n                id: userid\n            },\n            bot:  { \n                id: 'viseBot'\n            },\n            resize: 'detect'\n          }, document.getElementById(\"bot\"));\n          \n          connector.postActivity({\n            from: { \n                id:   userid,\n            },\n                type: 'message',\n                text: 'CMD-START'\n            }).subscribe(\n                id => {},\n                error => console.log(\"Error posting activity\", error)\n            );\n    </script>\n  </body>\n</html>",
+        "output": "str",
+        "x": 410,
+        "y": 60,
+        "wires": [
+            [
+                "74fe2bfb.8a6fc4"
+            ]
+        ]
+    },
+    {
+        "id": "74fe2bfb.8a6fc4",
+        "type": "http response",
+        "z": "718459f3.4a42d8",
+        "name": "200",
+        "statusCode": "200",
+        "headers": {},
+        "x": 530,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "402738d9.4b33e8",
+        "type": "set-credentials",
+        "z": "718459f3.4a42d8",
+        "name": "creds",
+        "set": "parameters",
+        "setType": "msg",
+        "rules": "73fb07f4.a52948",
+        "x": 290,
+        "y": 60,
+        "wires": [
+            [
+                "965c2dac.d234a"
+            ]
+        ]
+    },
+    {
+        "id": "fed3ec1c.a5da4",
+        "type": "switch",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "property": "user.name",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 190,
+        "y": 480,
+        "wires": [
+            [
+                "8c167d15.d8c28"
+            ],
+            [
+                "e1e00695.e7c2c8"
+            ]
+        ]
+    },
+    {
+        "id": "8c167d15.d8c28",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "bonjour",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1543481260891",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": false,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": false,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Bien le bonjour {user.name} ! ",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 360,
+        "y": 460,
+        "wires": [
+            [
+                "2065b82a.f06828"
+            ]
+        ]
+    },
+    {
+        "id": "e1e00695.e7c2c8",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "bienvenue",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1543481260892",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": false,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Bienvenue ! Quel est ton nom mon ami ?",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 370,
+        "y": 500,
+        "wires": [
+            [
+                "4dff1bae.d1aac4",
+                "2065b82a.f06828"
+            ]
+        ]
+    },
+    {
+        "id": "2065b82a.f06828",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "sortie_finale",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 650,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4dff1bae.d1aac4",
+        "type": "change",
+        "z": "718459f3.4a42d8",
+        "name": "NewName",
+        "rules": [
+            {
+                "t": "set",
+                "p": "user.name",
+                "pt": "msg",
+                "to": "prompt.text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 560,
+        "wires": [
+            [
+                "36d520d2.8054d"
+            ]
+        ]
+    },
+    {
+        "id": "36d520d2.8054d",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "enchanté",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1543505394609",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": false,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": false,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Enchanté {user.name} !",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 560,
+        "y": 560,
+        "wires": [
+            [
+                "2065b82a.f06828"
+            ]
+        ]
+    },
+    {
+        "id": "89c46a99.f8aa68",
+        "type": "function",
+        "z": "718459f3.4a42d8",
+        "name": "func",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "f0c4d67c.8a07a8"
+            ]
+        ]
+    },
+    {
+        "id": "f0c4d67c.8a07a8",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "name",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1543586726408",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "user.name",
+        "promptTextType": "msg",
+        "speech": false,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Bonjour ! Quel est ton prénom ?",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 210,
+        "y": 300,
+        "wires": [
+            [
+                "fffa19e1.a3bd88"
+            ]
+        ]
+    },
+    {
+        "id": "11627644.2b2faa",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "msg_profi",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 600,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1f159975.e41bb7",
+        "type": "profile",
+        "z": "718459f3.4a42d8",
+        "name": "profil",
+        "defaultLocale": "fr_FR",
+        "x": 510,
+        "y": 300,
+        "wires": [
+            [
+                "11627644.2b2faa"
+            ]
+        ]
+    },
+    {
+        "id": "354301b6.a5314e",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "msg_db",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 420,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "fffa19e1.a3bd88",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "msg_prompt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 250,
+        "y": 200,
+        "wires": []
+    }
+]
