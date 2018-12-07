@@ -7,11 +7,15 @@
         "info": ""
     },
     {
+        "id": "3f771ea3.7ae222",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
         "id": "bf01498e.e4c518",
         "type": "subflow",
         "name": "set user",
         "info": "",
-        "category": "",
         "in": [],
         "out": []
     },
@@ -34,13 +38,11 @@
         "name": "chatbot_db"
     },
     {
-        "id": "2f0244e1.25d9cc",
-        "type": "mongodb-config",
+        "id": "ad575965.c96648",
+        "type": "node-recast-config",
         "z": "",
-        "hostname": "40.89.173.111",
-        "port": "27017",
-        "db": "chatbot",
-        "name": "chatbotdb"
+        "name": "DevToken",
+        "lang": "fr"
     },
     {
         "id": "db853bd.d7886c8",
@@ -121,295 +123,6 @@
         ]
     },
     {
-        "id": "fed3ec1c.a5da4",
-        "type": "switch",
-        "z": "718459f3.4a42d8",
-        "name": "",
-        "property": "user.name",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "repair": false,
-        "outputs": 2,
-        "x": 190,
-        "y": 480,
-        "wires": [
-            [
-                "8c167d15.d8c28"
-            ],
-            [
-                "e1e00695.e7c2c8"
-            ]
-        ]
-    },
-    {
-        "id": "8c167d15.d8c28",
-        "type": "send-card",
-        "z": "718459f3.4a42d8",
-        "name": "bonjour",
-        "labels": [
-            "Default output"
-        ],
-        "nodeid": "SEND_1543481260891",
-        "delay": "0",
-        "repeat": "0",
-        "outputs": 1,
-        "btnOutput": false,
-        "quickOutput": false,
-        "prompt": false,
-        "promptText": "prompt.text",
-        "promptTextType": "msg",
-        "speech": false,
-        "speechText": "",
-        "sendType": "text",
-        "text": "Bien le bonjour {user.name} ! ",
-        "random": false,
-        "media": "",
-        "mediaType": "str",
-        "eventName": "",
-        "eventValue": "",
-        "eventValueType": "str",
-        "title": "",
-        "titleType": "str",
-        "subtitle": "",
-        "attach": "",
-        "attachType": "str",
-        "carousel": false,
-        "buttons": [
-            {
-                "title": "",
-                "action": "postBack",
-                "value": "",
-                "regexp": ""
-            }
-        ],
-        "quicktext": "",
-        "quickreplies": [
-            {
-                "title": "",
-                "action": "postBack",
-                "value": "",
-                "regexp": ""
-            }
-        ],
-        "signintext": "",
-        "signintitle": "",
-        "signintitleType": "str",
-        "signinurl": "",
-        "signinurlType": "str",
-        "shcardtext": "",
-        "shcardtitle": "",
-        "shcardtitleType": "str",
-        "shcardimage": "",
-        "shcardimageType": "str",
-        "shcardbutton": "",
-        "shcardbuttonType": "str",
-        "shcardurl": "",
-        "shcardurlType": "str",
-        "x": 360,
-        "y": 460,
-        "wires": [
-            [
-                "2065b82a.f06828"
-            ]
-        ]
-    },
-    {
-        "id": "e1e00695.e7c2c8",
-        "type": "send-card",
-        "z": "718459f3.4a42d8",
-        "name": "bienvenue",
-        "labels": [
-            "Default output"
-        ],
-        "nodeid": "SEND_1543481260892",
-        "delay": "0",
-        "repeat": "0",
-        "outputs": 1,
-        "btnOutput": false,
-        "quickOutput": false,
-        "prompt": true,
-        "promptText": "prompt.text",
-        "promptTextType": "msg",
-        "speech": false,
-        "speechText": "",
-        "sendType": "text",
-        "text": "Bienvenue ! Quel est ton nom mon ami ?",
-        "random": false,
-        "media": "",
-        "mediaType": "str",
-        "eventName": "",
-        "eventValue": "",
-        "eventValueType": "str",
-        "title": "",
-        "titleType": "str",
-        "subtitle": "",
-        "attach": "",
-        "attachType": "str",
-        "carousel": false,
-        "buttons": [
-            {
-                "title": "",
-                "action": "postBack",
-                "value": "",
-                "regexp": ""
-            }
-        ],
-        "quicktext": "",
-        "quickreplies": [
-            {
-                "title": "",
-                "action": "postBack",
-                "value": "",
-                "regexp": ""
-            }
-        ],
-        "signintext": "",
-        "signintitle": "",
-        "signintitleType": "str",
-        "signinurl": "",
-        "signinurlType": "str",
-        "shcardtext": "",
-        "shcardtitle": "",
-        "shcardtitleType": "str",
-        "shcardimage": "",
-        "shcardimageType": "str",
-        "shcardbutton": "",
-        "shcardbuttonType": "str",
-        "shcardurl": "",
-        "shcardurlType": "str",
-        "x": 370,
-        "y": 500,
-        "wires": [
-            [
-                "4dff1bae.d1aac4",
-                "2065b82a.f06828"
-            ]
-        ]
-    },
-    {
-        "id": "2065b82a.f06828",
-        "type": "debug",
-        "z": "718459f3.4a42d8",
-        "name": "sortie_finale",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "x": 650,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "4dff1bae.d1aac4",
-        "type": "change",
-        "z": "718459f3.4a42d8",
-        "name": "NewName",
-        "rules": [
-            {
-                "t": "set",
-                "p": "user.name",
-                "pt": "msg",
-                "to": "prompt.text",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 390,
-        "y": 560,
-        "wires": [
-            [
-                "36d520d2.8054d"
-            ]
-        ]
-    },
-    {
-        "id": "36d520d2.8054d",
-        "type": "send-card",
-        "z": "718459f3.4a42d8",
-        "name": "enchanté",
-        "labels": [
-            "Default output"
-        ],
-        "nodeid": "SEND_1543505394609",
-        "delay": "0",
-        "repeat": "0",
-        "outputs": 1,
-        "btnOutput": false,
-        "quickOutput": false,
-        "prompt": false,
-        "promptText": "prompt.text",
-        "promptTextType": "msg",
-        "speech": false,
-        "speechText": "",
-        "sendType": "text",
-        "text": "Enchanté {user.name} !",
-        "random": false,
-        "media": "",
-        "mediaType": "str",
-        "eventName": "",
-        "eventValue": "",
-        "eventValueType": "str",
-        "title": "",
-        "titleType": "str",
-        "subtitle": "",
-        "attach": "",
-        "attachType": "str",
-        "carousel": false,
-        "buttons": [
-            {
-                "title": "",
-                "action": "postBack",
-                "value": "",
-                "regexp": ""
-            }
-        ],
-        "quicktext": "",
-        "quickreplies": [
-            {
-                "title": "",
-                "action": "postBack",
-                "value": "",
-                "regexp": ""
-            }
-        ],
-        "signintext": "",
-        "signintitle": "",
-        "signintitleType": "str",
-        "signinurl": "",
-        "signinurlType": "str",
-        "shcardtext": "",
-        "shcardtitle": "",
-        "shcardtitleType": "str",
-        "shcardimage": "",
-        "shcardimageType": "str",
-        "shcardbutton": "",
-        "shcardbuttonType": "str",
-        "shcardurl": "",
-        "shcardurlType": "str",
-        "x": 560,
-        "y": 560,
-        "wires": [
-            [
-                "2065b82a.f06828"
-            ]
-        ]
-    },
-    {
         "id": "89c46a99.f8aa68",
         "type": "function",
         "z": "718459f3.4a42d8",
@@ -434,6 +147,194 @@
             "Default output"
         ],
         "nodeid": "SEND_1543586726408",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "payload",
+        "promptTextType": "msg",
+        "speech": false,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Bonjour ! Comment t'appelles-tu ?",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 190,
+        "y": 300,
+        "wires": [
+            [
+                "1c5c30bf.21c8bf"
+            ]
+        ]
+    },
+    {
+        "id": "1f159975.e41bb7",
+        "type": "profile",
+        "z": "718459f3.4a42d8",
+        "name": "profile",
+        "defaultLocale": "fr_FR",
+        "x": 809.0000190734863,
+        "y": 299.00000762939453,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "354301b6.a5314e",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "msg_db",
+        "active": true,
+        "console": false,
+        "complete": "true",
+        "x": 762.0000152587891,
+        "y": 244.00000667572021,
+        "wires": []
+    },
+    {
+        "id": "f71090d4.0ebd9",
+        "type": "function",
+        "z": "718459f3.4a42d8",
+        "name": "fname_key",
+        "func": "msg.key = {\n    fname: msg.user.name\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 534.0000076293945,
+        "y": 300.00000381469727,
+        "wires": [
+            [
+                "ee0ed0d0.6da81"
+            ]
+        ]
+    },
+    {
+        "id": "ee0ed0d0.6da81",
+        "type": "nosql",
+        "z": "718459f3.4a42d8",
+        "name": "mongo",
+        "server-type": "mongodb",
+        "collection": "users",
+        "collectionType": "str",
+        "key": "key",
+        "offset": "0",
+        "offsetType": "num",
+        "limit": "10",
+        "limitType": "num",
+        "value": "userFound",
+        "operation": "find",
+        "merge": false,
+        "server-mongodb": "b17e0003.442d7",
+        "server-nedb": "",
+        "x": 679.0000076293945,
+        "y": 300.00000381469727,
+        "wires": [
+            [
+                "1f159975.e41bb7",
+                "354301b6.a5314e"
+            ]
+        ]
+    },
+    {
+        "id": "1c5c30bf.21c8bf",
+        "type": "node-recast",
+        "z": "718459f3.4a42d8",
+        "name": "recast",
+        "key": "ad575965.c96648",
+        "input": "payload",
+        "inputType": "msg",
+        "output": "payload",
+        "outputType": "msg",
+        "x": 314.10000228881836,
+        "y": 300.00000190734863,
+        "wires": [
+            [
+                "d0bf2b6f.9712c8"
+            ]
+        ]
+    },
+    {
+        "id": "ca258843.53d888",
+        "type": "bot",
+        "z": "3f771ea3.7ae222",
+        "name": "bot",
+        "project": "",
+        "port": "",
+        "x": 62.000003814697266,
+        "y": 281.00000381469727,
+        "wires": [
+            [
+                "a499c3b7.e3f7d"
+            ]
+        ]
+    },
+    {
+        "id": "a499c3b7.e3f7d",
+        "type": "function",
+        "z": "3f771ea3.7ae222",
+        "name": "func",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 139.00000381469727,
+        "y": 238.00000286102295,
+        "wires": [
+            [
+                "d1f4e1ea.fd648"
+            ]
+        ]
+    },
+    {
+        "id": "d1f4e1ea.fd648",
+        "type": "send-card",
+        "z": "3f771ea3.7ae222",
+        "name": "name",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1544087363405",
         "delay": "0",
         "repeat": "0",
         "outputs": 1,
@@ -489,68 +390,64 @@
         "shcardbuttonType": "str",
         "shcardurl": "",
         "shcardurlType": "str",
-        "x": 210,
-        "y": 300,
+        "x": 211.00000381469727,
+        "y": 281.00000381469727,
         "wires": [
             [
-                "fffa19e1.a3bd88"
+                "21d6100a.7245a"
             ]
         ]
     },
     {
-        "id": "11627644.2b2faa",
-        "type": "debug",
-        "z": "718459f3.4a42d8",
-        "name": "msg_profi",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "x": 600,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "1f159975.e41bb7",
-        "type": "profile",
-        "z": "718459f3.4a42d8",
-        "name": "profil",
-        "defaultLocale": "fr_FR",
-        "x": 510,
-        "y": 300,
+        "id": "21d6100a.7245a",
+        "type": "function",
+        "z": "3f771ea3.7ae222",
+        "name": "fname_key",
+        "func": "msg.key = {\n    fname: msg.user.name\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 355.00000762939453,
+        "y": 281.00000381469727,
         "wires": [
             [
-                "11627644.2b2faa"
+                "8df93d82.d308e"
             ]
         ]
     },
     {
-        "id": "354301b6.a5314e",
-        "type": "debug",
-        "z": "718459f3.4a42d8",
-        "name": "msg_db",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "x": 420,
-        "y": 240,
-        "wires": []
+        "id": "8df93d82.d308e",
+        "type": "nosql",
+        "z": "3f771ea3.7ae222",
+        "name": "mongo",
+        "server-type": "mongodb",
+        "collection": "users",
+        "collectionType": "str",
+        "key": "key",
+        "offset": "0",
+        "offsetType": "num",
+        "limit": "10",
+        "limitType": "num",
+        "value": "userFound",
+        "operation": "find",
+        "merge": false,
+        "server-mongodb": "b17e0003.442d7",
+        "server-nedb": "",
+        "x": 506.00000762939453,
+        "y": 281.00000381469727,
+        "wires": [
+            []
+        ]
     },
     {
-        "id": "fffa19e1.a3bd88",
+        "id": "d0bf2b6f.9712c8",
         "type": "debug",
         "z": "718459f3.4a42d8",
-        "name": "msg_prompt",
+        "name": "",
         "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
+        "console": "false",
         "complete": "true",
-        "x": 250,
-        "y": 200,
+        "x": 348.1000061035156,
+        "y": 232,
         "wires": []
     }
 ]
