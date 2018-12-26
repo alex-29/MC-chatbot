@@ -9,7 +9,9 @@
     {
         "id": "3f771ea3.7ae222",
         "type": "tab",
-        "label": "Flow 1"
+        "label": "test_doc",
+        "disabled": false,
+        "info": ""
     },
     {
         "id": "bf01498e.e4c518",
@@ -42,6 +44,28 @@
         "type": "node-recast-config",
         "z": "",
         "name": "DevToken",
+        "lang": "fr"
+    },
+    {
+        "id": "f609348a.56efe8",
+        "type": "node-recast-config",
+        "z": "",
+        "name": "RequestToken",
+        "lang": "fr"
+    },
+    {
+        "id": "66ce45e5.496d9c",
+        "type": "ms-luis-config",
+        "z": "",
+        "name": "endpoint_luis",
+        "way": "endpoint",
+        "host": "https://westus.api.cognitive.microsoft.com"
+    },
+    {
+        "id": "ec7ea6e8.c2b998",
+        "type": "node-recast-config",
+        "z": "",
+        "name": "config-test",
         "lang": "fr"
     },
     {
@@ -85,7 +109,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "<html>\n  <head>\n    <title>Webchat</title>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.botframework.com/botframework-webchat/latest/botchat.css\">\n  </head>\n\n<body id=\"bg\">\n    <div id=\"bot\"></div>\n    \n    <script src=\"https://code.jquery.com/jquery-3.1.1.slim.min.js\" integrity=\"sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://cdn.botframework.com/botframework-webchat/latest/botchat.js\" width=\"400\"></script>\n    <script>\n        var name = \"Alex\";\n        var userid = Math.floor(Math.random() * 10) + \"\" + Date.now()+ \"\" +Math.floor(Math.random() * 10);\n        var connector = new BotChat.DirectLine ({ secret: \"{{parameters.secret}}\" });\n        \n          BotChat.App({\n            botConnection: connector,\n            user: { \n                id: userid\n            },\n            bot:  { \n                id: 'viseBot'\n            },\n            resize: 'detect'\n          }, document.getElementById(\"bot\"));\n          \n          connector.postActivity({\n            from: { \n                id:   userid,\n            },\n                type: 'message',\n                text: 'CMD-START'\n            }).subscribe(\n                id => {},\n                error => console.log(\"Error posting activity\", error)\n            );\n    </script>\n  </body>\n</html>",
+        "template": "<html>\n  <head>\n    <title>Webchat</title>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.botframework.com/botframework-webchat/latest/botchat.css\">\n  </head>\n\n<body id=\"bg\">\n    <div id=\"bot\"></div>\n    \n    <script src=\"https://code.jquery.com/jquery-3.1.1.slim.min.js\" integrity=\"sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://cdn.botframework.com/botframework-webchat/latest/botchat.js\" width=\"400\"></script>\n    <script>\n        var name = \"Alex\";\n        var userid = Math.floor(Math.random() * 10) + \"\" + Date.now()+ \"\" +Math.floor(Math.random() * 10);\n        var connector = new BotChat.DirectLine ({ secret: \"{{parameters.secret}}\" });\n        \n          BotChat.App({\n            botConnection: connector,\n            user: { \n                id: userid,\n                name: name\n            },\n            bot:  { \n                id: 'viseBot'\n            },\n            resize: 'detect'\n          }, document.getElementById(\"bot\"));\n          \n          connector.postActivity({\n            from: { \n                id:   userid,\n                name: name\n            },\n                type: 'message',\n                text: 'CMD-START'\n            }).subscribe(\n                id => {},\n                error => console.log(\"Error posting activity\", error)\n            );\n    </script>\n  </body>\n</html>",
         "output": "str",
         "x": 410,
         "y": 60,
@@ -142,7 +166,7 @@
         "id": "f0c4d67c.8a07a8",
         "type": "send-card",
         "z": "718459f3.4a42d8",
-        "name": "name",
+        "name": "intro",
         "labels": [
             "Default output"
         ],
@@ -158,7 +182,7 @@
         "speech": false,
         "speechText": "",
         "sendType": "text",
-        "text": "Bonjour ! Comment t'appelles-tu ?",
+        "text": "Bonjour ! Qui êtes-vous ?",
         "random": false,
         "media": "",
         "mediaType": "str",
@@ -206,20 +230,8 @@
         "y": 300,
         "wires": [
             [
-                "1c5c30bf.21c8bf"
+                "b2b679e5.fbc9c8"
             ]
-        ]
-    },
-    {
-        "id": "1f159975.e41bb7",
-        "type": "profile",
-        "z": "718459f3.4a42d8",
-        "name": "profile",
-        "defaultLocale": "fr_FR",
-        "x": 809.0000190734863,
-        "y": 299.00000762939453,
-        "wires": [
-            []
         ]
     },
     {
@@ -230,8 +242,8 @@
         "active": true,
         "console": false,
         "complete": "true",
-        "x": 762.0000152587891,
-        "y": 244.00000667572021,
+        "x": 580,
+        "y": 360,
         "wires": []
     },
     {
@@ -239,11 +251,11 @@
         "type": "function",
         "z": "718459f3.4a42d8",
         "name": "fname_key",
-        "func": "msg.key = {\n    fname: msg.user.name\n};\n\nreturn msg;",
+        "func": "var nom;\nvar prenom;\n\nmsg.payload.entities.forEach((elem)=>{\n    switch(elem['type']){\n        case 'nom':\n            nom = elem.entity;\n            break;\n        case 'prenom':\n            prenom = elem.entity; \n            break;\n        default:\n            console.log('No name for the user');\n    }\n});\n\nmsg.key = {fname: prenom , lname: nom};\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 534.0000076293945,
-        "y": 300.00000381469727,
+        "x": 450,
+        "y": 300,
         "wires": [
             [
                 "ee0ed0d0.6da81"
@@ -268,12 +280,12 @@
         "merge": false,
         "server-mongodb": "b17e0003.442d7",
         "server-nedb": "",
-        "x": 679.0000076293945,
-        "y": 300.00000381469727,
+        "x": 610,
+        "y": 300,
         "wires": [
             [
-                "1f159975.e41bb7",
-                "354301b6.a5314e"
+                "354301b6.a5314e",
+                "e0e606e.cf470f8"
             ]
         ]
     },
@@ -282,13 +294,13 @@
         "type": "node-recast",
         "z": "718459f3.4a42d8",
         "name": "recast",
-        "key": "ad575965.c96648",
+        "key": "ec7ea6e8.c2b998",
         "input": "payload",
         "inputType": "msg",
         "output": "payload",
         "outputType": "msg",
-        "x": 314.10000228881836,
-        "y": 300.00000190734863,
+        "x": 870,
+        "y": 100,
         "wires": [
             [
                 "d0bf2b6f.9712c8"
@@ -302,8 +314,8 @@
         "name": "bot",
         "project": "",
         "port": "",
-        "x": 62.000003814697266,
-        "y": 281.00000381469727,
+        "x": 70,
+        "y": 280,
         "wires": [
             [
                 "a499c3b7.e3f7d"
@@ -318,35 +330,104 @@
         "func": "\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 139.00000381469727,
-        "y": 238.00000286102295,
+        "x": 190,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d0bf2b6f.9712c8",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "debug recast",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 924.0000038146973,
+        "y": 63.000001430511475,
+        "wires": []
+    },
+    {
+        "id": "b2b679e5.fbc9c8",
+        "type": "ms-luis",
+        "z": "718459f3.4a42d8",
+        "name": "luis",
+        "config": "66ce45e5.496d9c",
+        "text": "payload",
+        "textType": "msg",
+        "intent": "payload",
+        "intentType": "msg",
+        "x": 310,
+        "y": 300,
         "wires": [
             [
-                "d1f4e1ea.fd648"
+                "27223fe2.dc272",
+                "f71090d4.0ebd9"
             ]
         ]
     },
     {
-        "id": "d1f4e1ea.fd648",
+        "id": "27223fe2.dc272",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "debug_luis",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 270,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e0e606e.cf470f8",
+        "type": "switch",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "property": "userFound",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 750,
+        "y": 300,
+        "wires": [
+            [
+                "c3b45069.834fa"
+            ],
+            [
+                "454f63d1.cc1dbc"
+            ]
+        ]
+    },
+    {
+        "id": "c3b45069.834fa",
         "type": "send-card",
-        "z": "3f771ea3.7ae222",
-        "name": "name",
+        "z": "718459f3.4a42d8",
+        "name": "Bienvenue",
         "labels": [
             "Default output"
         ],
-        "nodeid": "SEND_1544087363405",
+        "nodeid": "SEND_1545321071435",
         "delay": "0",
         "repeat": "0",
         "outputs": 1,
         "btnOutput": false,
         "quickOutput": false,
         "prompt": true,
-        "promptText": "user.name",
+        "promptText": "prompt.text",
         "promptTextType": "msg",
-        "speech": false,
+        "speech": true,
         "speechText": "",
         "sendType": "text",
-        "text": "Bonjour ! Quel est ton prénom ?",
+        "text": "Bienvenue à toi {msg.key.fname} ! Pourrais tu me donner ton âge, ton adresse e-mail ainsi que ton poste dans l'entreprise dans cet ordre et séparés par des virgules au possible ?",
         "random": false,
         "media": "",
         "mediaType": "str",
@@ -390,64 +471,186 @@
         "shcardbuttonType": "str",
         "shcardurl": "",
         "shcardurlType": "str",
-        "x": 211.00000381469727,
-        "y": 281.00000381469727,
+        "x": 890,
+        "y": 280,
         "wires": [
             [
-                "21d6100a.7245a"
+                "3f151a77.d1c4e6"
             ]
         ]
     },
     {
-        "id": "21d6100a.7245a",
+        "id": "454f63d1.cc1dbc",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "Bonjour",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1545321199459",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": true,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Bonjour {userFound.0.fname} de quoi as-tu besoin ?",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 880,
+        "y": 320,
+        "wires": [
+            [
+                "a46aca8b.1c5a28"
+            ]
+        ]
+    },
+    {
+        "id": "d94384bc.b11c98",
         "type": "function",
-        "z": "3f771ea3.7ae222",
-        "name": "fname_key",
-        "func": "msg.key = {\n    fname: msg.user.name\n};\n\nreturn msg;",
+        "z": "718459f3.4a42d8",
+        "name": "store-info",
+        "func": "var tab = msg.prompt.text.split(',');\nvar boolTab = [false,false,false];\n\ntab.forEach((elem)=>{\n    var i = 0;\n    if(parseInt(elem) >= 18 && parseInt(elem) <= 63){\n        boolTab[i] = true;\n    }\n    \n    \n})\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 355.00000762939453,
-        "y": 281.00000381469727,
-        "wires": [
-            [
-                "8df93d82.d308e"
-            ]
-        ]
-    },
-    {
-        "id": "8df93d82.d308e",
-        "type": "nosql",
-        "z": "3f771ea3.7ae222",
-        "name": "mongo",
-        "server-type": "mongodb",
-        "collection": "users",
-        "collectionType": "str",
-        "key": "key",
-        "offset": "0",
-        "offsetType": "num",
-        "limit": "10",
-        "limitType": "num",
-        "value": "userFound",
-        "operation": "find",
-        "merge": false,
-        "server-mongodb": "b17e0003.442d7",
-        "server-nedb": "",
-        "x": 506.00000762939453,
-        "y": 281.00000381469727,
+        "x": 180,
+        "y": 420,
         "wires": [
             []
         ]
     },
     {
-        "id": "d0bf2b6f.9712c8",
-        "type": "debug",
+        "id": "16ed80e4.45dbaf",
+        "type": "link in",
         "z": "718459f3.4a42d8",
         "name": "",
-        "active": true,
-        "console": "false",
-        "complete": "true",
-        "x": 348.1000061035156,
-        "y": 232,
+        "links": [
+            "3f151a77.d1c4e6"
+        ],
+        "x": 55,
+        "y": 480,
+        "wires": [
+            [
+                "de10617.bca85a"
+            ]
+        ]
+    },
+    {
+        "id": "3f151a77.d1c4e6",
+        "type": "link out",
+        "z": "718459f3.4a42d8",
+        "name": "link-mail-age-poste",
+        "links": [
+            "16ed80e4.45dbaf"
+        ],
+        "x": 995,
+        "y": 280,
         "wires": []
+    },
+    {
+        "id": "a46aca8b.1c5a28",
+        "type": "link out",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "links": [],
+        "x": 995,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "b05b73db.ccf6b",
+        "type": "link in",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "links": [],
+        "x": 55,
+        "y": 560,
+        "wires": [
+            [
+                "2683c77e.b183a8"
+            ]
+        ]
+    },
+    {
+        "id": "2683c77e.b183a8",
+        "type": "ms-luis",
+        "z": "718459f3.4a42d8",
+        "text": "payload",
+        "textType": "msg",
+        "intent": "payload",
+        "intentType": "msg",
+        "x": 150,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "de10617.bca85a",
+        "type": "switch",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "property": "prompt.text",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 160,
+        "y": 480,
+        "wires": [
+            []
+        ]
     }
 ]
