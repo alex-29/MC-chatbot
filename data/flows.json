@@ -341,7 +341,7 @@
         "type": "debug",
         "z": "718459f3.4a42d8",
         "name": "debug recast",
-        "active": true,
+        "active": false,
         "console": "false",
         "complete": "true",
         "x": 924.0000038146973,
@@ -372,11 +372,11 @@
         "type": "debug",
         "z": "718459f3.4a42d8",
         "name": "debug_luis",
-        "active": true,
+        "active": false,
         "console": "false",
         "complete": "true",
-        "x": 270,
-        "y": 340,
+        "x": 350,
+        "y": 360,
         "wires": []
     },
     {
@@ -384,7 +384,7 @@
         "type": "switch",
         "z": "718459f3.4a42d8",
         "name": "",
-        "property": "userFound",
+        "property": "userFound.0.lname",
         "propertyType": "msg",
         "rules": [
             {
@@ -400,7 +400,7 @@
         "y": 300,
         "wires": [
             [
-                "c3b45069.834fa"
+                "1d8120c.8b5b3df"
             ],
             [
                 "454f63d1.cc1dbc"
@@ -427,7 +427,7 @@
         "speech": true,
         "speechText": "",
         "sendType": "text",
-        "text": "Bienvenue à toi {msg.key.fname} ! Pourrais tu me donner ton âge, ton adresse e-mail ainsi que ton poste dans l'entreprise dans cet ordre et séparés par des virgules au possible ?",
+        "text": "Bienvenue {key.fname} ! \nAfin de t'enregistrer dans la base de données, pourrais-tu me donner ton adresse email ?",
         "random": false,
         "media": "",
         "mediaType": "str",
@@ -471,11 +471,11 @@
         "shcardbuttonType": "str",
         "shcardurl": "",
         "shcardurlType": "str",
-        "x": 890,
-        "y": 280,
+        "x": 950,
+        "y": 160,
         "wires": [
             [
-                "3f151a77.d1c4e6"
+                "1477d2c0.24038d"
             ]
         ]
     },
@@ -499,7 +499,7 @@
         "speech": true,
         "speechText": "",
         "sendType": "text",
-        "text": "Bonjour {userFound.0.fname} de quoi as-tu besoin ?",
+        "text": "Bonjour {key.fname} de quoi as-tu besoin ?",
         "random": false,
         "media": "",
         "mediaType": "str",
@@ -544,7 +544,7 @@
         "shcardurl": "",
         "shcardurlType": "str",
         "x": 880,
-        "y": 320,
+        "y": 340,
         "wires": [
             [
                 "a46aca8b.1c5a28"
@@ -556,11 +556,11 @@
         "type": "function",
         "z": "718459f3.4a42d8",
         "name": "store-info",
-        "func": "var tab = msg.prompt.text.split(',');\nvar boolTab = [false,false,false];\n\ntab.forEach((elem)=>{\n    var i = 0;\n    if(parseInt(elem) >= 18 && parseInt(elem) <= 63){\n        boolTab[i] = true;\n    }\n    \n    \n})\n\nreturn msg;",
+        "func": "var tab = msg.prompt.text.split(',');\nvar boolTab = [false,false,false];\nvar regMail = new RegExp(\"/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$/\"); \n\ntab.forEach((elem)=>{\n    var i = 0;\n    if(parseInt(elem) >= 18 && parseInt(elem) <= 63){\n        boolTab[i] = true;\n        msg.key.age = elem;\n        \n    }\n    if(regMail.test(elem)){\n        boolTab[i] = true;\n        msg.key.email = elem;\n    }\n    if(typeof elem === 'string' && elem.length < 30){\n        boolTab[i] = true;\n        msg.key.poste = elem;\n    }\n})\nmsg.result = boolTab;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 180,
-        "y": 420,
+        "x": 700,
+        "y": 60,
         "wires": [
             []
         ]
@@ -569,15 +569,15 @@
         "id": "16ed80e4.45dbaf",
         "type": "link in",
         "z": "718459f3.4a42d8",
-        "name": "",
+        "name": "suite bienvenue",
         "links": [
             "3f151a77.d1c4e6"
         ],
-        "x": 55,
+        "x": 15,
         "y": 480,
         "wires": [
             [
-                "de10617.bca85a"
+                "29e4c2e4.389b7e"
             ]
         ]
     },
@@ -589,27 +589,31 @@
         "links": [
             "16ed80e4.45dbaf"
         ],
-        "x": 995,
-        "y": 280,
+        "x": 1395,
+        "y": 200,
         "wires": []
     },
     {
         "id": "a46aca8b.1c5a28",
         "type": "link out",
         "z": "718459f3.4a42d8",
-        "name": "",
-        "links": [],
-        "x": 995,
-        "y": 320,
+        "name": "suite bonjour",
+        "links": [
+            "b05b73db.ccf6b"
+        ],
+        "x": 975,
+        "y": 340,
         "wires": []
     },
     {
         "id": "b05b73db.ccf6b",
         "type": "link in",
         "z": "718459f3.4a42d8",
-        "name": "",
-        "links": [],
-        "x": 55,
+        "name": "suite bonjour bis",
+        "links": [
+            "a46aca8b.1c5a28"
+        ],
+        "x": 15,
         "y": 560,
         "wires": [
             [
@@ -621,18 +625,50 @@
         "id": "2683c77e.b183a8",
         "type": "ms-luis",
         "z": "718459f3.4a42d8",
+        "name": "",
+        "config": "66ce45e5.496d9c",
         "text": "payload",
         "textType": "msg",
         "intent": "payload",
         "intentType": "msg",
-        "x": 150,
+        "x": 110,
         "y": 560,
         "wires": [
             []
         ]
     },
     {
-        "id": "de10617.bca85a",
+        "id": "86ed5101.f2099",
+        "type": "switch",
+        "z": "718459f3.4a42d8",
+        "name": "switch",
+        "property": "cpt",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 870,
+        "y": 220,
+        "wires": [
+            [
+                "c3b45069.834fa"
+            ],
+            [
+                "88982e0d.d9997"
+            ]
+        ]
+    },
+    {
+        "id": "1477d2c0.24038d",
         "type": "switch",
         "z": "718459f3.4a42d8",
         "name": "",
@@ -640,15 +676,518 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "eq",
-                "v": "",
-                "vt": "str"
+                "t": "regex",
+                "v": "^([a-z0-9_-]*\\.[a-z0-9_-]*)@viseo\\.com$",
+                "vt": "str",
+                "case": true
+            },
+            {
+                "t": "else"
             }
         ],
         "checkall": "true",
+        "outputs": 2,
+        "x": 1030,
+        "y": 220,
+        "wires": [
+            [
+                "dc6e2459.b92e48"
+            ],
+            [
+                "c35c40bd.489e3"
+            ]
+        ]
+    },
+    {
+        "id": "88982e0d.d9997",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "redemande",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1545821626282",
+        "delay": "0",
+        "repeat": "0",
         "outputs": 1,
-        "x": 160,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": true,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Malheureusement, j'ai besoin de ton email viseo pour continuer..",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 950,
+        "y": 280,
+        "wires": [
+            [
+                "1477d2c0.24038d"
+            ]
+        ]
+    },
+    {
+        "id": "23cd1370.c0db2c",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "Merci",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1545821773900",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": true,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Merci ! Pourrais-tu aussi m'indiquer le nom de ton poste dans l'entreprise ?",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 1290,
+        "y": 200,
+        "wires": [
+            [
+                "3f151a77.d1c4e6"
+            ]
+        ]
+    },
+    {
+        "id": "dc6e2459.b92e48",
+        "type": "change",
+        "z": "718459f3.4a42d8",
+        "name": "setmail",
+        "rules": [
+            {
+                "t": "set",
+                "p": "key.email",
+                "pt": "msg",
+                "to": "prompt.text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 200,
+        "wires": [
+            [
+                "23cd1370.c0db2c"
+            ]
+        ]
+    },
+    {
+        "id": "6aa13732.aefc68",
+        "type": "link out",
+        "z": "718459f3.4a42d8",
+        "name": "retour compteur",
+        "links": [
+            "7f27d68.3de2628"
+        ],
+        "x": 1255,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "7f27d68.3de2628",
+        "type": "link in",
+        "z": "718459f3.4a42d8",
+        "name": "début compteur",
+        "links": [
+            "6aa13732.aefc68"
+        ],
+        "x": 735,
+        "y": 180,
+        "wires": [
+            [
+                "86ed5101.f2099"
+            ]
+        ]
+    },
+    {
+        "id": "1d8120c.8b5b3df",
+        "type": "change",
+        "z": "718459f3.4a42d8",
+        "name": "set compteur",
+        "rules": [
+            {
+                "t": "set",
+                "p": "cpt",
+                "pt": "msg",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 240,
+        "wires": [
+            [
+                "86ed5101.f2099"
+            ]
+        ]
+    },
+    {
+        "id": "c35c40bd.489e3",
+        "type": "function",
+        "z": "718459f3.4a42d8",
+        "name": "cpt++",
+        "func": "msg.cpt++;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1150,
+        "y": 240,
+        "wires": [
+            [
+                "6aa13732.aefc68"
+            ]
+        ]
+    },
+    {
+        "id": "29e4c2e4.389b7e",
+        "type": "change",
+        "z": "718459f3.4a42d8",
+        "name": "setposte",
+        "rules": [
+            {
+                "t": "set",
+                "p": "key.poste",
+                "pt": "msg",
+                "to": "prompt.text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 120,
         "y": 480,
+        "wires": [
+            [
+                "8e409d4e.a9b51"
+            ]
+        ]
+    },
+    {
+        "id": "8e409d4e.a9b51",
+        "type": "nosql",
+        "z": "718459f3.4a42d8",
+        "name": "inserUser",
+        "server-type": "mongodb",
+        "collection": "users",
+        "collectionType": "str",
+        "key": "",
+        "offset": "",
+        "offsetType": "num",
+        "limit": "",
+        "limitType": "num",
+        "value": "key",
+        "operation": "add",
+        "merge": false,
+        "server-mongodb": "b17e0003.442d7",
+        "server-nedb": "",
+        "x": 260,
+        "y": 480,
+        "wires": [
+            [
+                "ad548462.e2df68",
+                "a5793fc0.cdd93"
+            ]
+        ]
+    },
+    {
+        "id": "ad548462.e2df68",
+        "type": "debug",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 340,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a5793fc0.cdd93",
+        "type": "switch",
+        "z": "718459f3.4a42d8",
+        "name": "testinser",
+        "property": "key._id",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 420,
+        "y": 480,
+        "wires": [
+            [
+                "95701fa1.471ef"
+            ],
+            [
+                "6e1afcb.0330c04"
+            ]
+        ]
+    },
+    {
+        "id": "95701fa1.471ef",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "enregistré",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1545832585271",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": true,
+        "speechText": "",
+        "sendType": "text",
+        "text": "Tu es désormais enregistré. Que puis-je faire pour toi ?",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 580,
+        "y": 460,
+        "wires": [
+            [
+                "44b11ef4.3cae4"
+            ]
+        ]
+    },
+    {
+        "id": "6e1afcb.0330c04",
+        "type": "send-card",
+        "z": "718459f3.4a42d8",
+        "name": "pas enregistré",
+        "labels": [
+            "Default output"
+        ],
+        "nodeid": "SEND_1545832588064",
+        "delay": "0",
+        "repeat": "0",
+        "outputs": 1,
+        "btnOutput": false,
+        "quickOutput": false,
+        "prompt": true,
+        "promptText": "prompt.text",
+        "promptTextType": "msg",
+        "speech": true,
+        "speechText": "",
+        "sendType": "text",
+        "text": "L'enregistrement n'a pas fonctionné..",
+        "random": false,
+        "media": "",
+        "mediaType": "str",
+        "eventName": "",
+        "eventValue": "",
+        "eventValueType": "str",
+        "title": "",
+        "titleType": "str",
+        "subtitle": "",
+        "attach": "",
+        "attachType": "str",
+        "carousel": false,
+        "buttons": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "quicktext": "",
+        "quickreplies": [
+            {
+                "title": "",
+                "action": "postBack",
+                "value": "",
+                "regexp": ""
+            }
+        ],
+        "signintext": "",
+        "signintitle": "",
+        "signintitleType": "str",
+        "signinurl": "",
+        "signinurlType": "str",
+        "shcardtext": "",
+        "shcardtitle": "",
+        "shcardtitleType": "str",
+        "shcardimage": "",
+        "shcardimageType": "str",
+        "shcardbutton": "",
+        "shcardbuttonType": "str",
+        "shcardurl": "",
+        "shcardurlType": "str",
+        "x": 600,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "44b11ef4.3cae4",
+        "type": "ms-luis",
+        "z": "718459f3.4a42d8",
+        "name": "",
+        "config": "66ce45e5.496d9c",
+        "text": "payload",
+        "textType": "msg",
+        "intent": "payload",
+        "intentType": "msg",
+        "x": 750,
+        "y": 460,
         "wires": [
             []
         ]
