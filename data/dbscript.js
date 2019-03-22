@@ -3,7 +3,7 @@ passwordAdmin = "mongoAdmin";
 loginUser = "mongoUser";
 passwordUser = "mongoUser";
 
-database="chatbotdb";
+database="dbchatbot";
 
 db = connect("localhost:27017/admin");
 if(db.system.users.find({user: loginAdmin}).count() === 0) {

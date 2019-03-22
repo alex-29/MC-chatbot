@@ -4,6 +4,7 @@
     "version": "0.0.1",
     "dependencies": {
         "node-red-contrib-viseo-nosql-manager": "0.0.1",
-        "node-red-node-openweathermap": "~0.2.1"
+        "node-red-node-openweathermap": "~0.2.1",
+        "find-keyword": "../node-red-contrib/find-keyword"
     }
 }
